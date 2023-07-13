@@ -1,0 +1,26 @@
+{
+  "name": "gitea-cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "gitea-cli": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gitea",
+    "cli"
+  ],
+  "author": "WumaCoder",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "cross-fetch": "^4.0.0",
+    "gitea-js": "^1.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2"
+  }
+}
