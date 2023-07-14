@@ -1,6 +1,9 @@
 const { giteaApi } = require('gitea-js');
 const fetch = require('cross-fetch'); // You have to use a fetch compatible polyfill like cross-fetch for Node.JS
 const { Command } = require('commander');
+const fs = require('fs-extra')
+const simpleGit = require('simple-git');
+
 
 async function main() {
   const program = new Command();
@@ -16,8 +19,7 @@ async function main() {
     .option('-t, --token <string>', 'gitea token')
     .option('-o, --owner <string>', 'user or org name')
     .option('-r, --repo <string>', 'repo name')
-    .action((str, options) => {
-      (async ()=>{
+    .action(async (str, options) => {
         console.log(`[sync]: ${str}`)
         const url = new URL(str)
         const api = giteaApi(url.origin, {
@@ -28,10 +30,26 @@ async function main() {
         await api.repos.repoMirrorSync(options.owner, options.repo);
         
         console.log(`[sync]: ok`)
-      })().catch(console.error)
     });
 
-  await program.parse();
+  const originSub = program.command('origin')
+  originSub
+    .command('pull')
+      .description('pull origin repo.')
+      .argument('<string>', 'clone dir path')
+      .option('-r, --repo <string>', 'git url')
+      .action(async (str, options) => {
+        console.log(`[origin][pull]: ${str}`)
+        fs.mkdirpSync(str);
+        if(fs.existsSync(`${str}/.git`)){
+          await simpleGit(str).pull();
+        }else{
+          await simpleGit().clone(options.repo, str);
+        }
+        console.log(`[origin][pull]: ok`)
+      });
+
+  await program.parseAsync();
 }
 
 main().catch(console.error)
