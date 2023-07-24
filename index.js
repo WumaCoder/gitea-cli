@@ -38,13 +38,14 @@ async function main() {
       .description('pull origin repo.')
       .argument('<string>', 'clone dir path')
       .option('-r, --repo <string>', 'git url')
+      .option('-b, --branch <string>', 'git branch')
       .action(async (str, options) => {
         console.log(`[origin][pull]: ${str}`)
         fs.mkdirpSync(str);
         if(fs.existsSync(`${str}/.git`)){
-          await simpleGit(str).pull();
+          await simpleGit(str).checkout(options.branch).pull('origin', options.branch);
         }else{
-          await simpleGit().clone(options.repo, str);
+          await simpleGit().clone(options.repo, str).checkout(options.branch).pull('origin', options.branch);
         }
         console.log(`[origin][pull]: ok`)
       });
