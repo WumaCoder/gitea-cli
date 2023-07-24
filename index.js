@@ -40,7 +40,7 @@ async function main() {
       .option('-r, --repo <string>', 'git url')
       .option('-b, --branch <string>', 'git branch')
       .action(async (str, options) => {
-        console.log(`[origin][pull]: ${str}`)
+        console.log(`[origin][pull]: ${str} ${options.branch}`)
         fs.mkdirpSync(str);
         if(fs.existsSync(`${str}/.git`)){
           await simpleGit(str).checkout(options.branch).pull('origin', options.branch);
