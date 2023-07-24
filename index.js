@@ -11,7 +11,7 @@ async function main() {
   program
     .name('gitea-cli')
     .description('CLI tool by gitea.')
-    .version('0.0.1');
+    .version('0.0.4');
 
   program.command('sync')
     .description('notify remote repository sync')
