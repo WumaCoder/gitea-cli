@@ -39,15 +39,15 @@ async function main() {
       .argument('<string>', 'clone dir path')
       .option('-r, --repo <string>', 'git url')
       .option('-b, --branch <string>', 'git branch')
-      .action(async (str, options) => {
-        console.log(`[origin][pull]: ${str} ${options.branch}`)
-        fs.mkdirpSync(str);
-        if(fs.existsSync(`${str}/.git`)){
+      .action(async (cwd, options) => {
+        console.log(`[origin][pull]: ${cwd} ${options.branch}`)
+        fs.mkdirpSync(cwd);
+        if(fs.existsSync(`${cwd}/.git`)){
           console.log('pull')
-          await simpleGit(str).checkout(options.branch).pull('origin', options.branch);
+          await simpleGit(cwd).checkout(options.branch).pull('origin', options.branch);
         }else{
           console.log('clone')
-          await simpleGit(str).clone(options.repo).checkout(options.branch).pull('origin', options.branch);
+          await simpleGit().clone(options.repo, cwd);
         }
         console.log(`[origin][pull]: ok`)
       });
