@@ -43,9 +43,11 @@ async function main() {
         console.log(`[origin][pull]: ${str} ${options.branch}`)
         fs.mkdirpSync(str);
         if(fs.existsSync(`${str}/.git`)){
+          console.log('pull')
           await simpleGit(str).checkout(options.branch).pull('origin', options.branch);
         }else{
-          await simpleGit().clone(options.repo, str).checkout(options.branch).pull('origin', options.branch);
+          console.log('clone')
+          await simpleGit(str).clone(options.repo).checkout(options.branch).pull('origin', options.branch);
         }
         console.log(`[origin][pull]: ok`)
       });
